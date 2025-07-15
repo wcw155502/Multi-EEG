@@ -59,33 +59,6 @@ def save_processed_data(dataset_path, save_dir, is_map=False, overwrite=False):
     return data_file, labels_file
 
 
-def load_processed_data(data_dir):
-    """
-    加载预处理的DEAP数据集
-    :param data_dir: 处理后数据所在目录
-    :return: 包含EEG, EOG, EMG数据和valence, arousal标签的字典
-    """
-
-    data_file = os.path.join(data_dir, 'eeg_eog_emg_data.pt')
-    labels_file = os.path.join(data_dir, 'valence_arousal_labels.pt')
-
-    # 检查文件是否存在
-    for file_path in [data_file, labels_file]:
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"找不到数据文件: {file_path}")
-
-    # 加载数据
-    print("加载预处理数据...")
-    data = torch.load(data_file)
-    labels = torch.load(labels_file)
-
-    # 合并返回
-    result = {**data, **labels}
-
-    print(f"数据加载完成！EEG数据形状: {result['eeg'].shape}")
-    return result
-
-
 if __name__ == "__main__":
     # 配置路径
     dataset_path = f'D:\Code\Muilti-EEG\data\data_preprocessed_matlab'  # 替换为你的DEAP数据集路径
@@ -93,11 +66,3 @@ if __name__ == "__main__":
 
     # 预处理并保存数据
     data_file, labels_file = save_processed_data(dataset_path, save_dir, is_map=False, overwrite=True)
-
-    # 测试加载数据
-    loaded_data = load_processed_data(save_dir)
-
-    # 打印数据信息
-    print("\n数据信息:")
-    for key, value in loaded_data.items():
-        print(f"{key}: {value.shape}, {value.dtype}")

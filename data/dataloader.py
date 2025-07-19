@@ -6,7 +6,6 @@
 import os
 import torch
 from torch.utils.data import Dataset, DataLoader, random_split
-import numpy as np
 
 
 class DeapDataset(Dataset):
@@ -18,9 +17,8 @@ class DeapDataset(Dataset):
         :param eeg:
         :param eog:
         :param emg:
-        :param valence:
-        :param arousal:
-        :param indices: 可选，指定使用哪些样本的索引
+        :param v_labels:
+        :param a_labels:
         """
         self.eeg = eeg
         self.eog = eog
@@ -90,7 +88,8 @@ def create_deap_datasets(data_dir, train_ratio=0.7, random_seed=42):
     return train_dataset, test_dataset
 
 
-def create_deap_dataloaders(data_dir, train_batch_size=32, test_batch_size=32 , train_ratio=0.7, random_seed=42, num_workers=0):
+def create_deap_dataloaders(data_dir, train_batch_size=32, test_batch_size=32, train_ratio=0.7, random_seed=42,
+                            num_workers=0):
     """
     创建DEAP数据集的训练和测试DataLoader
     :param data_dir:
@@ -106,21 +105,21 @@ def create_deap_dataloaders(data_dir, train_batch_size=32, test_batch_size=32 , 
     train_dataset, test_dataset = create_deap_datasets(data_dir, train_ratio, random_seed)
 
     # 创建DataLoader
-    train_loader = DataLoader(
+    train_dataloader = DataLoader(
         train_dataset,
         batch_size=train_batch_size,
         shuffle=True,
         num_workers=num_workers,
     )
 
-    test_loader = DataLoader(
+    test_dataloader = DataLoader(
         test_dataset,
         batch_size=test_batch_size,
         shuffle=False,
         num_workers=num_workers,
     )
 
-    return train_loader, test_loader
+    return train_dataloader, test_dataloader
 
 
 if __name__ == "__main__":
@@ -129,7 +128,8 @@ if __name__ == "__main__":
     batch_size = 16
 
     # 创建DataLoader
-    train_loader, test_loader = create_deap_dataloaders(data_dir, train_batch_size=batch_size, test_batch_size=batch_size)
+    train_loader, test_loader = create_deap_dataloaders(data_dir, train_batch_size=batch_size,
+                                                        test_batch_size=batch_size)
 
     # 打印数据加载器信息
     print(f"训练集批次数量: {len(train_loader)}")

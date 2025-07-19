@@ -2,8 +2,8 @@ import torch
 from torch import nn
 from torch.nn import Parameter
 import torch.nn.functional as F
-import sys
-# Code adapted from the fairseq repo.
+
+
 class MultiheadAttention(nn.Module):
     """Multi-headed attention.
     See "Attention Is All You Need" for more details.
@@ -103,7 +103,7 @@ class MultiheadAttention(nn.Module):
             v = torch.cat([v, v.new_zeros((v.size(0), 1) + v.size()[2:])], dim=1)
             if attn_mask is not None:
                 attn_mask = torch.cat([attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1)
-        
+
         attn_weights = torch.bmm(q, k.transpose(1, 2))
         assert list(attn_weights.size()) == [bsz * self.num_heads, tgt_len, src_len]
         if attn_mask is not None:

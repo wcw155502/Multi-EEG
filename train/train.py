@@ -5,8 +5,6 @@
 # __@Description__ : 多模态情感识别训练脚本
 
 import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import f1_score, recall_score
 import wandb
@@ -19,8 +17,8 @@ class Trainer:
         """
         初始化训练器
         :param model: 待训练的模型
-        :param train_loader: 训练数据加载器
-        :param test_loader: 测试数据加载器
+        :param train_dataloader: 训练数据加载器
+        :param test_dataloader: 测试数据加载器
         :param criterion: 损失函数
         :param optimizer: 优化器
         :param device: 计算设备
